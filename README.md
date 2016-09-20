@@ -20,3 +20,8 @@ questions = JsonUtility.FromJson<Questions> (jsn);
 
 4.If you can't deserialize only on Android. Use string.Trim() to solve the string before you deserialize it.
 4.解析Json在安卓ios可能遇到解析不出的问题，只需用string.Trim()处理掉多余的空格就能正常解析了
+
+5.Android Studio导出.jar的方法：把要导出的Module设为android library，然后build，生成的jar文件在build/intermediates/bundles/release/classes.jar
+参考链接： 
+http://blog.csdn.net/u010019717/article/details/51762010
+http://www.cnblogs.com/wuya/p/android-studio-gradle-export-jar-assets.html
