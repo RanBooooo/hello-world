@@ -25,3 +25,14 @@ questions = JsonUtility.FromJson<Questions> (jsn);
 参考链接： 
 http://blog.csdn.net/u010019717/article/details/51762010
 http://www.cnblogs.com/wuya/p/android-studio-gradle-export-jar-assets.html
+
+6.LOD(level of Detail)和Occlusion Culling（遮挡剔除）可用于性能优化，都是通过减少渲染的mesh降低GPU负担，都广泛运用于各类高画质游戏大作中。
+LOD使用高中低不同精细程度的模型添加到LOD Group中，当摄像机逐渐远离物体，一档档切换为低模。
+Occlusion Culling，bake场景中的static物体，通过对场景进行细分，把被遮挡的物体和不在摄像机视野内的物体隐藏。
+
+7.Realtime GI(Global Illumination)（实时全局照明）实现游戏场景的间接光照、反射光照和实时光源变化，是次时代游戏必备的功能，在Unity5以上版本可用。
+共有三个档次non-directional,directional,directional specular，移动端一般用non-directional。
+通过bake static物品。预计算物体在所有光照情况下受周围物体间接光照的数据，保存为lightmap光照贴图。lightmap parameter对bake时间和运行时性能影响很大，需要细致调节。
+一般只bake场景中的大中型物体，小物体一般用light probe来照亮。
+
+
