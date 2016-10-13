@@ -35,4 +35,6 @@ Occlusion Culling，bake场景中的static物体，通过对场景进行细分�
 通过bake static物品。预计算物体在所有光照情况下受周围物体间接光照的数据，保存为lightmap光照贴图。lightmap parameter对bake时间和运行时性能影响很大，需要细致调节。
 一般只bake场景中的大中型物体，小物体一般用light probe来照亮。
 
+8.除了Light，Unity 5 Standard Shader包含的Emission属性也可以用来点亮场景，默认作用于static物体，想点亮非static物品需要使用Light Probe。
+
 
