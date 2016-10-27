@@ -37,4 +37,12 @@ Occlusion Culling，bake场景中的static物体，通过对场景进行细分�
 
 8.除了Light，Unity 5 Standard Shader包含的Emission属性也可以用来点亮场景，默认作用于static物体，想点亮非static物品需要使用Light Probe。
 
+9.Unity旋转，四元数操作。参考链接：http://blog.csdn.net/candycat1992/article/details/41254799
+通过欧拉角：
+首先使用Quaternion.eulerAngles来得到欧拉角度，然后使用Mathf.Clamp对其进行插值运算。
+最后更新Quaternion.eulerAngles或者使用Quaternion.Euler(yourAngles)来创建一个新的四元数
+通过矩阵旋转：
+例如Quaternion.AngleAxis(float angle, Vector3 axis)，它可以返回一个绕轴线axis旋转angle角度的四元数变换。我们可以一个Vector3和它进行左乘，就将得到旋转后的Vector3
+
+
 
