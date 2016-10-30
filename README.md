@@ -33,7 +33,7 @@ Occlusion Culling，bake场景中的static物体，通过对场景进行细分�
 7.Realtime GI(Global Illumination)（实时全局照明）实现游戏场景的间接光照、反射光照和实时光源变化，是次时代游戏必备的功能，在Unity5以上版本可用。
 共有三个档次non-directional,directional,directional specular，移动端一般用non-directional。
 通过bake static物品。预计算物体在所有光照情况下受周围物体间接光照的数据，保存为lightmap光照贴图。lightmap parameter对bake时间和运行时性能影响很大，需要细致调节。
-一般只bake场景中的大中型物体，小物体一般用light probe来照亮。
+一般只bake场景中的大中型物体，细密网格的小物体一般用light probe来照亮。
 
 8.除了Light，Unity 5 Standard Shader包含的Emission属性也可以用来点亮场景，默认作用于static物体，想点亮非static物品需要使用Light Probe。
 
@@ -43,6 +43,21 @@ Occlusion Culling，bake场景中的static物体，通过对场景进行细分�
 最后更新Quaternion.eulerAngles或者使用Quaternion.Euler(yourAngles)来创建一个新的四元数
 通过矩阵旋转：
 例如Quaternion.AngleAxis(float angle, Vector3 axis)，它可以返回一个绕轴线axis旋转angle角度的四元数变换。我们可以一个Vector3和它进行左乘，就将得到旋转后的Vector3
+
+10.C#中的内置泛型集合简单整理，数据结构、其他特点
+List<T>——相较于ArrayList是类型安全的。可实现动态增加数组大小，随着增加元素达到容量上限时重新分配内部数组。引用类型可为null。值类型作为T时会为该值类型生成特殊类，来避免装箱。当有约500个以上元素时不装箱节省的内存会大于创建特殊类所占用的内存。
+Dictionary<TKey, TValue>——通过hash table实现，查找键速度极快，接近O(1)。
+LinkedList<T>——双向链表。
+HashSet<T>——可认为是不带value的Dictionary，元素不可重复，不可排序，提供交集、并集、补集等数学操作。
+SortedSet<T>——可认为是在插入和删除元素时排序的HashSet，双向链表红黑树实现。
+SortedList<TKey, TValue>——由键值对组成的数组，插入移除是对数级。与SortedDictionary相比占用内存更少，用已排序的集合来填充速度更快，可用索引高效检索。
+SortedDictionary<TKey, TValue>——和SortedList相似。插入移除是常数级。与SortedList相比占用内存更多。
+Stack<T>——后进先出，数组实现
+Queue<T>——先进先出，数组实现，指向队首的指针，出列时修改指针索引
+SynchronizedCollection<T>——线程安全的List<T>
+SynchronizedKeyedCollection<K, T>——线程安全的Dictionary
+SynchronizedReadOnlyCollection<T>——只读的SynchronizedCollection<T>
+
 
 
 
