@@ -58,6 +58,19 @@ SynchronizedCollection<T>——线程安全的List<T>
 SynchronizedKeyedCollection<K, T>——线程安全的Dictionary
 SynchronizedReadOnlyCollection<T>——只读的SynchronizedCollection<T>
 
+11.C#中的遇到的一些关键字，所有关键词列表https://msdn.microsoft.com/zh-cn/library/x53a06bb(v=vs.140).aspx
+lock(){}——(object)中填引用类型，{implemention}中写执行语句，开始执行implemention时将锁定object内存地址，执行完implemention时解锁，锁定时其他线程也执行这段代码时或操作object时将等待直到其解锁为止
+using——引入命名空间。using(){}用()中的IDisposable object执行{}中的语句
+throw——抛出异常
+try{}catch(Execption){}——根据异常类型处理
+delegate——申明委托、匿名方法
+func——委托 Func<参数1，参数2....返回值>
+action——无返回值的委托
+predicate——返回布尔类型的委托
+=>——Lambda Expression关键字，例如：num=>num<0 等于传入num参数，返回num<0。=>前是参数列表，=>后面是执行语句和返回值，参数为空时()=>
+
+
+
 
 
 
