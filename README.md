@@ -49,7 +49,7 @@ List<T>——相较于ArrayList是类型安全的。可实现动态增加数组�
 Dictionary<TKey, TValue>——通过hash table实现，查找键速度极快，接近O(1)。
 LinkedList<T>——双向链表。
 HashSet<T>——可认为是不带value的Dictionary，元素不可重复，不可排序，提供交集、并集、补集等数学操作。
-SortedSet<T>——可认为是在插入和删除元素时排序的HashSet，双向链表红黑树实现。
+SortedSet<T>——可认为是在插入和删除元素时排序的HashSet，双向节点红黑树实现。
 SortedList<TKey, TValue>——由键值对组成的数组，插入移除是对数级。与SortedDictionary相比占用内存更少，用已排序的集合来填充速度更快，可用索引高效检索。
 SortedDictionary<TKey, TValue>——和SortedList相似。插入移除是常数级。与SortedList相比占用内存更多。
 Stack<T>——后进先出，数组实现
