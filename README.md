@@ -1,4 +1,4 @@
-﻿# hello-world
+# hello-world
 Test Repository From RanBoo
 
 Hi Human!
@@ -73,6 +73,10 @@ predicate——返回布尔类型的委托
 
 13.递归。一个问题n重的问题能转化为n-1，最终转化为1重的简单问题，就是典型适用递归解决的问题
 
+题外话：对于技术细节想要掌握，只有自己看文档再自己亲自写代码式，虽然麻烦但别无他法。
+
+14.Coroutine详细测试：在某一MonoBehaviour对象中调用自身或其他对象的IEnumerator方法，需要结束掉时要在次MonoBehaviour对象中调用StopCoroutine()方法，IEnumerator的迭代频率完全取决于游戏帧数。
+可以理解为：StartCoroutine是将对方的这个IEnumerator方法注册到自身的UPdate中，然后逐帧迭代。StopCoroutines是将其从Update中取消。
 
 
 
