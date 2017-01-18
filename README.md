@@ -78,6 +78,15 @@ predicate——返回布尔类型的委托
 14.Coroutine详细测试：在某一MonoBehaviour对象中调用自身或其他对象的IEnumerator方法，需要结束掉时要在次MonoBehaviour对象中调用StopCoroutine()方法，IEnumerator的迭代频率完全取决于游戏帧数。
 可以理解为：StartCoroutine是将对方的这个IEnumerator方法注册到自身的UPdate中，然后逐帧迭代。StopCoroutines是将其从Update中取消。
 
+15.iOS的手势操作（及狭义广义抽象的意义）
+iOS可以直接读取用户的每次触摸屏幕，但开发者们从来不会这样做，如果每个开发者都要直接读取touch再计算成不同的手势，标准不统一费力不讨好。
+所以iOS提供了手势抽象层将用户的操作处理为手势，抽象类UIGestureRecognizer是不同手势Recognizer的子类，提供了各种手势共有的一些属性例如状态机。
+大致用法：
+第一步：为某一个UIView添加某种GestureRecognizer，使视图能意识到手势（只有视图可以意识到手势，控制器不行）
+第二部：提供处理这种手势的方法（handle）（此方法是在意识到一种手势，进入某一状态机时不断执行的）
+第一步通常在控制器中完成
+第二步的方法是视图V或控制器C提供的，绝不是模型M提供的，如果只是简单的改变视图中的一些东西甚至可以不通过控制器，如果手势导致了模型的改变就要通过控制器来实现
+
 
 
 

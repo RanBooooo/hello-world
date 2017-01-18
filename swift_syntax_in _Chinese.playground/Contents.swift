@@ -98,6 +98,35 @@ let mySubArrary = myArrary[2...3]
 //2.除了Enum都有构造函数
 //3.Struct Enum是值类型，传递的是拷贝，Class是应用类型，传递的是指针。值类型被赋予给let修饰的变量将不更改，let修饰的指针，指针无法修改，但指向的对象依然可以修改、使用属性和方法。对于Enum和Struct能修改值类型的方法要用关键词mutating标记
 //4.结构体多用于基础类型，如String Double Int Arrary Dictionay Point Rectangle。独立自给自足的小东西，通过复制值传递才有意义，大东西一般用Class
+//Enum的方法中rawValue关键词
+enum Mouth: Int{
+    case Frown
+    case Smirk
+    case Neutral
+    case Grin
+    case Smile
+    
+    func sadderMouth() ->Mouth{
+        return Mouth(rawValue: rawValue - 1) ?? .Frown
+    }
+    
+    func happierMouth() -> Mouth{
+        return Mouth(rawValue: rawValue + 1) ?? .Smile
+    }
+}
+
+
+
+//Switch语法
+let mouth = Mouth.Frown
+switch mouth{
+ case .Frown: fallthrough //用下一个case的代买来执行
+ case .Smirk: let two = 1+1//do something
+ case .Neutral,.Grin: let one = 1+0//do another thing //同时处理c和d两种情况
+ default: break //如果全部枚举完了就不需要default了
+}
+
+
 
 
 //Property属性的更多用法
@@ -244,8 +273,6 @@ let arr = [Double]()
     }
  }
 */
-
-
 
 
 
