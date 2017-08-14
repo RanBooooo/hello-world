@@ -7,7 +7,8 @@ RanBoo here, I am learning unity3D and want to become a game developer.
 
 I may take some notes about Unity3D and C# down below.
 
-Unity Tips
+## Unity Tips
+
 1.If Unity3D Editor crushed, and sense havn't save. You can find backup file in the path: Project/Temp/_Backupscenes/
 1.如果编辑器意外崩溃了，但场景未保存，这时可以打开工程目录，找到/Temp/_Backupscenes/文件夹，可以看到有后缀名为.backup的文件，将该文件的后缀名改为.unity拖拽到项目视图，即可还原编辑器崩溃前的场景。
 
@@ -77,6 +78,7 @@ predicate——返回布尔类型的委托
 
 14.Coroutine详细测试：在某一MonoBehaviour对象中调用自身或其他对象的IEnumerator方法，需要结束掉时要在次MonoBehaviour对象中调用StopCoroutine()方法，IEnumerator的迭代频率完全取决于游戏帧数。
 可以理解为：StartCoroutine是将对方的这个IEnumerator方法注册到自身的UPdate中，然后逐帧迭代。StopCoroutines是将其从Update中取消。
+Routine yield return返回的IEnumerator是C#中的标准实现。可以访问MoveNext()和Current方法，但是不应该这么做。
 
 15.iOS的手势操作（及狭义广义抽象的意义）
 iOS可以直接读取用户的每次触摸屏幕，但开发者们从来不会这样做，如果每个开发者都要直接读取touch再计算成不同的手势，标准不统一费力不讨好。

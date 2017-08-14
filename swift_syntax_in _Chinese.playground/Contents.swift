@@ -13,8 +13,9 @@ if let label = testLabel{
     }
 }
 //一行中用?连续逐层访问，效果相同,注意y是Optional Int而z是Int
-let y = testLabel?.text?.hashValue//尝试unwrap
+let y = testLabel?.text?.hashValue//尝试unwrap ?在=号左边同样适用
 let z = testLabel!.text!.hashValue//强制unwrap，如果为nil程序崩溃
+
 
 //??尝试使用一个Optional相关值或一个默认值
 let testLabel2: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: 60, height: 15))
@@ -96,7 +97,7 @@ let mySubArrary = myArrary[2...3]
 //Class Struct Enum
 //相似之处：1.都能拥有属性和方法（Enum只能拥有get set定义的经计算的属性）
 //2.除了Enum都有构造函数
-//3.Struct Enum是值类型，传递的是拷贝，Class是应用类型，传递的是指针。值类型被赋予给let修饰的变量将不更改，let修饰的指针，指针无法修改，但指向的对象依然可以修改、使用属性和方法。对于Enum和Struct能修改值类型的方法要用关键词mutating标记
+//3.Struct Enum是值类型，传递的是拷贝，Class是引用类型，传递的是指针。值类型被赋予给let修饰的变量将不更改，let修饰的指针，指针无法修改，但指向的对象依然可以修改、使用属性和方法。对于Enum和Struct能修改值类型的方法要用关键词mutating标记
 //4.结构体多用于基础类型，如String Double Int Arrary Dictionay Point Rectangle。独立自给自足的小东西，通过复制值传递才有意义，大东西一般用Class
 //Enum的方法中rawValue关键词
 enum Mouth: Int{
@@ -183,6 +184,8 @@ for num in filteredNumber{
 }
 //数组ß转换为另一种数据类型
 //Array<T1>.map(transform: (T1) -> T2) -> [T2]
+
+
 var mappedArray = filteredNumber.map({String($0)})
 //当closure（闭包）是函数的最后一个参数，可以写在在数列表的()外面
 mappedArray = filteredNumber.map(){String($0)}
