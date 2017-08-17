@@ -82,6 +82,8 @@ Shader "Example/ExampleShader" {
 
 ### Surf常见内置输入输出
 
+详见：https://docs.unity3d.com/Manual/SL-SurfaceShaders.html
+
 #### 输入 Input
 
 float2 uv_MainTex // uv_贴图的名字 可以获得当前顶点的贴图坐标
@@ -115,6 +117,78 @@ finalcolor:functionName // 表示把functionName作为最终颜色函数，可�
 自定义光线光线模型 \#pragma surface surf SimpleLambert // 此处SimpleLambert对应的实际函数名称应该是LightingSimpleLambert
 
 曲面细分函数tessellate:functionName，返回值是一个float4，三个元素代表三角形的三条边，一个元素代表三角形内部还要添加:\#pragma target 4.6\#include "Tessellation.cginc"
+
+### ShaderLab语法
+
+#### SubShader Pass Category
+
+SubShader位于Shader之中，至少一个，多个表示对不同硬件的fallback。将命令写于SubShader中表示对齐下的Pass都适用
+
+Pass位于SubShader中，至少一个（可不写），多个表示对一个物体的多次渲染；也有某些Pass会执行多次，例如ForwardAdd会根据多少光影响了物体而执行多次；可设置条件是某一Pass只在某一条件下渲染，例如只在deferred下渲染。可用UsePass从其他文件中复制某一Pass。GrabPass抓取屏幕纹理用于之后的Pass渲染。
+
+Category是逻辑组，可用于存放SubShader，将命令写于Category中表示对齐下的SubShader都适用
+
+#### ShaderLab命令
+
+#####名字和标签
+
+一个Pass能定义一个名字Name和任意数量的标签Tags
+
+语法
+
+Pass {\[Name and Tags\]}
+
+Tags包括：LightMode PassFlags 和RequireOptions
+
+LightMode只在某一渲染路径下使用此Pass
+
+"PassFlags"="OnlyDirectional" Forwar
+
+"RequireOptions"="SoftVegetation"
+
+详见：https://docs.unity3d.com/Manual/SL-PassTags.html
+
+#####渲染状态设置：
+
+Cull Back|Fornt|Off 多边形剔除模式，剔除背面、剔除正面、不剔除
+
+ZTest (Less | Greater | LEqual | GEqual | Equal | NotEqual | Always) Z-Buffer深度检测，小于、大于、小于等于、大于等于、等于、不等于、永远
+
+ZWrite On|Off是否写入深度缓冲区
+
+Offset OffsetFactor, OffsetUnits 写入深度缓冲区的偏移
+
+Blend渲染后像素如何与已有的像素混合，详见：https://docs.unity3d.com/Manual/SL-Blend.html
+
+ColorMask 任意RGBA的组合 色彩遮罩，关闭某一通道的写入
+
+一些Legacy固定函数命令：
+
+Lighting On | Off
+
+Material { Material Block }
+
+SeparateSpecular On | Off
+
+Color Color-value
+
+ColorMaterial AmbientAndDiffuse | Emission
+
+Fog { Fog Block }
+
+AlphaTest (Less | Greater | LEqual | GEqual | Equal | NotEqual | Always) CutoffValue
+
+SetTexture textureProperty { combine options }
+
+#### 高级
+
+1.替换着色器
+
+Camera.RenderWithShader或Camera.SetReplacementShader 用某一Shader替换场景中所有带某一Tag的shader进行渲染。详见：https://docs.unity3d.com/Manual/SL-ShaderReplacement.html
+
+2.Shader LOD
+
+只使用LOD值小于一个指定值的shader或subshader
 
 ### 其他Tips
 
@@ -327,3 +401,42 @@ Fade（渐隐）使透明度值遍布整个物体，包括所有的镜面高光�
 ##### 2.确保Unity build时包含了着色器变体
 
 ​	包含至少一个同类的材质资源，以确保Unity知道你想要用的着色器变体。材质至少要被应用于一个场景或被放到Resources文件夹中。否则Unity build时会漏掉，因为显然没有被使用。
+
+### Unity渲染管线
+
+由于光线计算必须在shader中，而且有多种可能的光线和阴影类型，写出能正常工作的Shader以及很复杂了。为了让事情变简单，Unity有Surface Shaders，其中所有的光线，阴影，LightMapping，forward和Deferred渲染都被自动处理了。
+
+####渲染路径
+
+​	光线如何施加、以及用Shader中的哪一个Pass，取决于用了哪个渲染路径。shader中的每个pass通过pass的tags交流它的光线类型。
+
+在Forward Rendering中使用**ForwardBase** 和**ForwardAdd** pass
+
+在Deferred Shading中使用**Deferred** pass
+
+在legacy Deferred Lighting中使用**PrepassBase**和**PrepassFinal** pass
+
+在legacy Vertex Lit中使用**Vertex** **VertexLMRGBM** **VertexLM** pass
+
+在以上任何一个中，要渲染阴影或深度纹理，使用**ShadowCaster** pass
+
+#### Forward渲染路径细节
+
+将场景中的光源分为三类：逐像素（数量在Quality Setting中设置，除了第一个其他的使用Additional render passes）、逐顶点、SH（Spherical Harmonics立体调和函数）
+
+Base Pass 用逐像素和SH渲染物体。此pass也添加shader中所有的lightmap，环境光和自发光。平行光有阴影。Lightmap的物体得不到从SH的光照。如果使用“OnlyDirectional”pass指令，base pass 只渲染主平行光，环境光/光探测球和lightmap，SH和顶点光不会包含在pass数据中。
+
+Additional Passes，对于除了第一个逐像素的光源执行，默认不产生阴影，除使用multi_compile_fwdadd_fullshadows缩写指令。
+
+#### Deferred shading 渲染路径
+
+使用了这种渲染路径能影响物体的光数量没有限制，所有的光都会逐像素计算，都能正确的与法线贴图交互。另外所有的光能够有cookies和阴影。
+
+使用MRT（multiple render targets），先渲染几何体存入G-buffer，再进行光计算，每个光都得到计算，得到真实的光影效果。
+
+
+
+
+
+
+
