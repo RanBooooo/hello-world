@@ -130,7 +130,55 @@ Category是逻辑组，可用于存放SubShader，将命令写于Category中表�
 
 #### ShaderLab命令
 
-#####名字和标签
+#####SubShader标签
+
+以下是unity内置的tags必须卸载SubShader中，不能写在Pass中，此外也可以自定义tags用Material.GetTag获取
+
+1渲染顺序- **Queue**标签 决定物体的绘图顺序，Shader 决定它属于哪个渲染队列，透明shader确保在不透明物体之后绘制等等
+
+Background此队列在所有其他之前，一般用在背景物体上
+
+Geometry默认，不透明几何体就使用这一队列
+
+AlphaTest alpha测试几何体用这一队列，独立于Geometry队列，因为在不透明体绘制后再渲染alpha测试物体效率更高
+
+Transparent此队列在Geometry和AlphaTest之后，从后往前的顺序。所有alpha混合（例如不写入深度缓冲区的shader）应该在这里
+
+Overlay 这一渲染队列是为了层叠效果。任何最后渲染的应该在这里（例如lens flares光斑效果）
+
+在两个队列之间的特殊用法。每个队列代表一个整数Background是1000，Geometry是2000，AlphaTest是2450，Transparent是3000，Overlay是4000。Shader的的队列可以是这样的
+
+Tags { "Queue" = "Geometry+1" }
+
+这就表示队列序号是2001。当要在两个队列间绘制时很有用。例如透明的水绘制应该在不透明之后，但在透明之前。
+
+队列知道2500（"Geometry+500" ）都被当做不透明物体，被优化绘制顺序已获得最佳性能。2500以上的队列被认为是透明物体根据距离排序物体，从远到近渲染。天空盒在所有的不透明和透明物体之间绘制。
+
+2渲染类型 **RenderType**标签
+
+用于shader替换和产生摄像机的深度纹理
+
+3禁用Batching **DisableBatching**标签
+
+某些shader（主要是那些物体-空间顶点变形的）在Draw Call Batching使用时无法工作。因为Batching便换了左右几何体到世界坐标中，所以物体空间丢失了
+
+三个值：True对此Shader永远禁用batching，False默认不禁用，LODDading当LOD法定启用时禁用，主要用与树木
+
+4强制不施加阴影 **ForceNoShadowCasting**标签
+
+Ture值物体用此subshader 渲染永不产生阴影。在对透明物体用替换shader时最有用，不会希望从别的subshader继承阴影pass
+
+5忽略投影器 **IgnoreProjector**标签 时物体不受Projector影响。用于半透明物体，因为Projector对他们的效果不理想
+
+5能使用图集 **CanUseSpriteAtlas**标签
+
+False值表示：当被打包成图集时不工作
+
+6预览类型 **PreviewType**标签
+
+表示材质监视器预览如何展示材质。默认是球体，但也能设为平面或天空盒
+
+#####Pass名字和标签
 
 一个Pass能定义一个名字Name和任意数量的标签Tags
 
@@ -142,13 +190,13 @@ Tags包括：LightMode PassFlags 和RequireOptions
 
 LightMode只在某一渲染路径下使用此Pass
 
-"PassFlags"="OnlyDirectional" Forwar
+"PassFlags"="OnlyDirectional" 
 
 "RequireOptions"="SoftVegetation"
 
 详见：https://docs.unity3d.com/Manual/SL-PassTags.html
 
-#####渲染状态设置：
+#####Pass渲染状态设置：
 
 Cull Back|Fornt|Off 多边形剔除模式，剔除背面、剔除正面、不剔除
 
