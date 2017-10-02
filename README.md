@@ -1,4 +1,4 @@
-﻿# hello-world
+# hello-world
 Test Repository From RanBoo
 
 Hi Human!
@@ -7,7 +7,8 @@ RanBoo here, I am learning unity3D and want to become a game developer.
 
 I may take some notes about Unity3D and C# down below.
 
-Unity Tips
+## Unity Tips
+
 1.If Unity3D Editor crushed, and sense havn't save. You can find backup file in the path: Project/Temp/_Backupscenes/
 1.如果编辑器意外崩溃了，但场景未保存，这时可以打开工程目录，找到/Temp/_Backupscenes/文件夹，可以看到有后缀名为.backup的文件，将该文件的后缀名改为.unity拖拽到项目视图，即可还原编辑器崩溃前的场景。
 
@@ -69,9 +70,29 @@ action——无返回值的委托
 predicate——返回布尔类型的委托
 =>——Lambda Expression关键字，例如：num=>num<0 等于传入num参数，返回num<0。=>前是参数列表，=>后面是执行语句和返回值，参数为空时()=>
 
+<<<<<<< HEAD
 12.红黑树——通过2-3树理解红黑树，为保持平衡，插入数据时从底层向上递归，最终只会在根节点增加深度
 
+=======
+12.Unity导出到Xcode时注意在导出前在player setting中选择真机还是模拟器
 
+13.递归。一个问题n重的问题能转化为n-1，最终转化为1重的简单问题，就是典型适用递归解决的问题
+
+题外话：对于技术细节想要掌握，只有自己看文档再自己亲自写代码式，虽然麻烦但别无他法。
+
+14.Coroutine详细测试：在某一MonoBehaviour对象中调用自身或其他对象的IEnumerator方法，需要结束掉时要在次MonoBehaviour对象中调用StopCoroutine()方法，IEnumerator的迭代频率完全取决于游戏帧数。
+可以理解为：StartCoroutine是将对方的这个IEnumerator方法注册到自身的UPdate中，然后逐帧迭代。StopCoroutines是将其从Update中取消。
+Routine yield return返回的IEnumerator是C#中的标准实现。可以访问MoveNext()和Current方法，但是不应该这么做。
+>>>>>>> origin/edit
+
+15.iOS的手势操作（及狭义广义抽象的意义）
+iOS可以直接读取用户的每次触摸屏幕，但开发者们从来不会这样做，如果每个开发者都要直接读取touch再计算成不同的手势，标准不统一费力不讨好。
+所以iOS提供了手势抽象层将用户的操作处理为手势，抽象类UIGestureRecognizer是不同手势Recognizer的子类，提供了各种手势共有的一些属性例如状态机。
+大致用法：
+第一步：为某一个UIView添加某种GestureRecognizer，使视图能意识到手势（只有视图可以意识到手势，控制器不行）
+第二部：提供处理这种手势的方法（handle）（此方法是在意识到一种手势，进入某一状态机时不断执行的）
+第一步通常在控制器中完成
+第二步的方法是视图V或控制器C提供的，绝不是模型M提供的，如果只是简单的改变视图中的一些东西甚至可以不通过控制器，如果手势导致了模型的改变就要通过控制器来实现
 
 
 
